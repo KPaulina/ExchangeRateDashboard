@@ -1,25 +1,4 @@
 import pandas as pd
-from sqlalchemy import create_engine
-from sqlalchemy.sql import text
-from consts import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, RENDER_USER, RENDER_PASSWORD, RENDER_PORT, RENDER_DATABASE, RENDER_HOSTNAME
-
-
-def get_data_from_external_postgres_database() -> pd.DataFrame:
-    '''
-    Function created to get data from database
-    :return: pd.Dataframe
-    '''
-    url = f'postgresql://{RENDER_USER}:{RENDER_PASSWORD}@{RENDER_HOSTNAME}:{RENDER_PORT}/{RENDER_DATABASE}'
-    engine = create_engine(url)
-
-    sql = """
-        SELECT id, currency_code, provider, time_last_update_utc, rates, updated_at
-        FROM public.exchange_rate_pln;
-    """
-
-    with engine.connect().execution_options(autocommit=True) as conn:
-        query = conn.execute(text(sql))
-    return pd.DataFrame(query.fetchall())
 
 
 def create_unique_list_of_currencies(df: pd.DataFrame):
@@ -32,7 +11,3 @@ def create_unique_list_of_currencies(df: pd.DataFrame):
     list_of_currency_codes = list(sorted(list_of_currency_codes))
     return list_of_currency_codes
 
-
-def set_data_types(df: pd.DataFrame) -> pd.DataFrame:
-    df['rates'] = df['rates'].astype(float)
-    return df
