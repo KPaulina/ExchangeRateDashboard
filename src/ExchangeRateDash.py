@@ -5,9 +5,10 @@ from dash import dcc, html
 import plotly.express as px
 import os
 from consts import DATA_DIR
-from data import create_unique_list_of_currencies
+from data import create_unique_list_of_currencies, take_only_part_of_date
 
 df_exchange_rate = pd.read_excel(os.path.join(DATA_DIR, 'exchange_rate_data.xlsx'))
+df_exchange_rate = take_only_part_of_date(df_exchange_rate)
 currency_codes = create_unique_list_of_currencies(df_exchange_rate)
 
 app = Dash(name='big_mac')
@@ -20,7 +21,8 @@ for currency in currency_codes:
 
 app.layout = html.Div([
     html.H2("Choose currency to check its exchange rate for PLN", style={'text-align': 'center'}),
-    html.Div([dcc.Dropdown(id='currency-picker', options=currency_options, value=currency_options[42]["value"], searchable=True)]),
+    html.Div([dcc.Dropdown(id='currency-picker', options=currency_options, value=currency_options[42]["value"],
+                           searchable=True)]),
     html.Div([dcc.Graph(id='currency')])
 ])
 
