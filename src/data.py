@@ -1,15 +1,15 @@
 import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
-from consts import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
+from consts import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, RENDER_USER, RENDER_PASSWORD, RENDER_PORT, RENDER_DATABASE, RENDER_HOSTNAME
 
 
-def get_data_from_postgres_database() -> pd.DataFrame:
+def get_data_from_external_postgres_database() -> pd.DataFrame:
     '''
     Function created to get data from database
     :return: pd.Dataframe
     '''
-    url = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+    url = f'postgresql://{RENDER_USER}:{RENDER_PASSWORD}@{RENDER_HOSTNAME}:{RENDER_PORT}/{RENDER_DATABASE}'
     engine = create_engine(url)
 
     sql = """
