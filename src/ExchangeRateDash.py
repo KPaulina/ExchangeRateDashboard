@@ -2,10 +2,10 @@ import dash
 from dash import Dash
 from dash import dcc, html
 import plotly.express as px
-from data import create_unique_list_of_currencies, get_data_from_external_postgres_database
+from data import create_unique_list_of_currencies, get_data_from_external_postgres_database, set_data_types
 
 df_exchange_rate = get_data_from_external_postgres_database()
-df_exchange_rate['rates'] = df_exchange_rate['rates'].astype(float)
+df_exchange_rate = set_data_types(df_exchange_rate)
 currency_codes = create_unique_list_of_currencies(df_exchange_rate)
 
 

@@ -31,3 +31,8 @@ def create_unique_list_of_currencies(df: pd.DataFrame):
     list_of_currency_codes = df['currency_code'].unique().tolist()
     list_of_currency_codes = list(sorted(list_of_currency_codes))
     return list_of_currency_codes
+
+
+def set_data_types(df: pd.DataFrame) -> pd.DataFrame:
+    df['rates'] = df['rates'].astype(float)
+    return df
