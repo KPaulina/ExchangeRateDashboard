@@ -1,13 +1,14 @@
 import dash
+import pandas as pd
 from dash import Dash
 from dash import dcc, html
 import plotly.express as px
+import os
+from consts import DATA_DIR
 from data import create_unique_list_of_currencies, get_data_from_external_postgres_database, set_data_types
 
-df_exchange_rate = get_data_from_external_postgres_database()
-# df_exchange_rate = set_data_types(df_exchange_rate)
+df_exchange_rate = pd.read_excel(os.path.join(DATA_DIR, 'exchange_rate_data.xlsx'))
 currency_codes = create_unique_list_of_currencies(df_exchange_rate)
-
 
 app = Dash(name='big_mac')
 server = app.server

@@ -14,3 +14,6 @@ RENDER_USER = os.getenv("RENDER_USER")
 RENDER_PASSWORD = os.getenv("RENDER_PASSWORD")
 RENDER_PORT = os.getenv("RENDER_PORT")
 RENDER_HOSTNAME = os.getenv("RENDER_HOSTNAME")
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))[:-3]
+DATA_DIR = os.path.join(BASE_DIR, 'data')
