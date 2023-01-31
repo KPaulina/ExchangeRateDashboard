@@ -22,7 +22,7 @@ def get_data_from_external_postgres_database() -> pd.DataFrame:
     return pd.DataFrame(query.fetchall())
 
 
-def create_unique_list_of_currencies(df: pd.DataFrame) -> list[str]:
+def create_unique_list_of_currencies(df: pd.DataFrame):
     '''
     Function created to make a list of unique currency codes that are needed for dropdown in the dash app
     :param df:
