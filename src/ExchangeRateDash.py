@@ -12,14 +12,15 @@ df_exchange_rate = pd.read_excel(os.path.join(DATA_DIR, 'exchange_rate_data.xlsx
 df_exchange_rate = take_only_part_of_date(df_exchange_rate)
 currency_codes = create_unique_list_of_currencies(df_exchange_rate)
 heatmap_data = pivoted_data(df_exchange_rate)
-print(heatmap_data.head(5))
-app = Dash(name='big_mac')
+
+app = Dash(name='exchange_rate')
 server = app.server
 
 currency_options = []
 for currency in currency_codes:
     currency_options.append({'label': str(currency), 'value': str(currency)})
 
+#heatmap figure
 fig = px.imshow(heatmap_data, labels={'x': 'currency', 'y': ''}, color_continuous_scale='RdBu_r', origin='lower', title="Exchange Rate HeatMap")
 
 app.layout = html.Div([
@@ -27,9 +28,7 @@ app.layout = html.Div([
     html.Div([dcc.Dropdown(id='currency-picker', options=currency_options, value=currency_options[42]["value"],
                            searchable=True)]),
     html.Div([dcc.Graph(id='currency')]),
-    dcc.Graph(id="graph", figure=fig),
-    # html.Div([dcc.Dropdown(id='date-picker', options=unique_dates, value='Sun, 01 Jan 2023', searchable=True)]),
-    # html.Div([dcc.Graph(id='heatmap')])
+    dcc.Graph(id="graph", figure=fig), #heatmap figre displayed by Dash
 ])
 
 
@@ -50,12 +49,6 @@ def choose_currency(selected_currency):
         template="seaborn"
     )
     return fig_exchange_rate
-
-
-
-
-
-
 
 
 if __name__ == '__main__':
