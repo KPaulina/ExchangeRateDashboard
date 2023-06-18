@@ -15,3 +15,11 @@ def create_unique_list_of_currencies(df: pd.DataFrame):
 def take_only_part_of_date(df: pd.DataFrame) -> pd.DataFrame:
     df['time_last_update_utc'] = df['time_last_update_utc'].str[:-15]
     return df
+
+
+def pivoted_data(df: pd.DataFrame):
+    # df[(df['B'] == 'Blue') & (df['C'] == 'Green')]
+    df = df[(df['currency_code'] == 'USD') | (df['currency_code'] == 'EUR') | (df['currency_code'] == 'NOK')
+        | (df['currency_code'] == 'SEK') | (df['currency_code'] == 'DKK')]
+    heatmap_data = df.pivot(index='id', columns='currency_code', values='rates')
+    return heatmap_data

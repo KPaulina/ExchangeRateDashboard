@@ -4,13 +4,15 @@ from dash import Dash
 from dash import dcc, html
 import plotly.express as px
 import os
+import plotly.graph_objects as go
 from consts import DATA_DIR
-from data import create_unique_list_of_currencies, take_only_part_of_date
+from data import create_unique_list_of_currencies, take_only_part_of_date, pivoted_data
 
 df_exchange_rate = pd.read_excel(os.path.join(DATA_DIR, 'exchange_rate_data.xlsx'))
 df_exchange_rate = take_only_part_of_date(df_exchange_rate)
 currency_codes = create_unique_list_of_currencies(df_exchange_rate)
-
+heatmap_data = pivoted_data(df_exchange_rate)
+print(heatmap_data.head(5))
 app = Dash(name='big_mac')
 server = app.server
 
@@ -18,12 +20,16 @@ currency_options = []
 for currency in currency_codes:
     currency_options.append({'label': str(currency), 'value': str(currency)})
 
+fig = px.imshow(heatmap_data, labels={'x': 'currency', 'y': ''}, color_continuous_scale='RdBu_r', origin='lower', title="Exchange Rate HeatMap")
 
 app.layout = html.Div([
     html.H2("Choose currency to check its exchange rate for PLN", style={'text-align': 'center'}),
     html.Div([dcc.Dropdown(id='currency-picker', options=currency_options, value=currency_options[42]["value"],
                            searchable=True)]),
-    html.Div([dcc.Graph(id='currency')])
+    html.Div([dcc.Graph(id='currency')]),
+    dcc.Graph(id="graph", figure=fig),
+    # html.Div([dcc.Dropdown(id='date-picker', options=unique_dates, value='Sun, 01 Jan 2023', searchable=True)]),
+    # html.Div([dcc.Graph(id='heatmap')])
 ])
 
 
@@ -44,6 +50,12 @@ def choose_currency(selected_currency):
         template="seaborn"
     )
     return fig_exchange_rate
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
